@@ -9,7 +9,7 @@ Autor: Jose Calderon
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+
 
 @Builder
 @Data

@@ -3,15 +3,20 @@ package com.jwt.token.controllers;
 import com.jwt.token.Constants;
 import com.jwt.token.dto.User;
 import com.jwt.token.services.UserService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +65,21 @@ public class UserController {
         Map<String, String> map = new HashMap<>();
         map.put("Access_token", token);
         return map;
+    }
+
+    @PostMapping(value = "/decode",
+                consumes = MediaType.TEXT_PLAIN_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    private String decodeJWTToken(@RequestBody String token) throws UnsupportedEncodingException {
+
+        String header = token.split("\\.")[0];
+        String payload = token.split("\\.")[1];
+        String signikey = token.split("\\.")[2];
+        String decode = header + payload;
+        return new  String(Base64.decodeBase64(decode), "UTF-8");
+
+
+
     }
 
 }
